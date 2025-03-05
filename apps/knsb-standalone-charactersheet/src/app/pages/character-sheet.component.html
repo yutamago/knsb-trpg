@@ -1,0 +1,119 @@
+<header knsbLogoHeader2>
+  <h2 class="text-2xl leading-[-0.05em]">Character Sheet</h2>
+</header>
+
+<form [formGroup]="formGroup" class="grid grid-cols-2">
+
+  <mat-stepper orientation="vertical" #stepper>
+    <mat-step [stepControl]="formGroup.controls.playerStep">
+      <ng-template matStepLabel>Player information</ng-template>
+
+      <div class="flex flex-col gap-2 pt-1">
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput type="text" [formControl]="formGroup.controls.playerStep.controls.name" required>
+        </mat-form-field>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="formGroup.controls.characterStep">
+      <ng-template matStepLabel>Character information</ng-template>
+
+      <div class="flex flex-col gap-2 pt-1">
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput type="text" [formControl]="formGroup.controls.characterStep.controls.name">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Age</mat-label>
+          <input matInput type="number" [formControl]="formGroup.controls.characterStep.controls.age">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Gender</mat-label>
+          <input matInput type="text" [formControl]="formGroup.controls.characterStep.controls.gender"
+                 [matAutocomplete]="auto">
+
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayGender">
+            @for (gender of genders; track gender.value) {
+              <mat-option [value]="gender.value">{{ gender.label }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+    </mat-step>
+
+    <mat-step [stepControl]="formGroup.controls.raceStep">
+      <ng-template matStepLabel>Race</ng-template>
+
+      <div class="flex flex-col gap-2 pt-1">
+        <mat-form-field>
+          <mat-label>Race</mat-label>
+          <mat-select [formControl]="formGroup.controls.raceStep.controls.race">
+            @for (characterRace of characterRaces; track characterRace) {
+              <mat-option [value]="characterRace">{{ characterRace }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Class</mat-label>
+          <mat-select [formControl]="formGroup.controls.raceStep.controls.class">
+            @for (characterClass of characterStarterClasses; track characterClass) {
+              <mat-option [value]="characterClass">{{ characterClass }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </mat-step>
+
+  </mat-stepper>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Base Ability Stats</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <thead>
+        <tr>
+          <td></td>
+          <td>Base Ability Score</td>
+          <td>Ability Bonus</td>
+          <td>Class Mod</td>
+          <td>Skills, etc.</td>
+          <td>Ability Score</td>
+          <td>Skill etc.</td>
+          <td>Check (# of dice)</td>
+        </tr>
+        </thead>
+        <tbody>
+          @for (statType of statTypes; track statType) {
+            <tr>
+              <td>{{ statType[1] }}</td>
+              <td [class.text-green-500]="(allocatedBonusPoints()?.[statType[0]] ?? 0) > 0">
+                {{ (baseAbilityScore()?.[statType[0]] ?? 0) + (allocatedBonusPoints()?.[statType[0]] ?? 0) }}
+                <a href (click)="$event.preventDefault(); incrementAbilityBonusPoint(statType[0])">+</a>
+                <a href (click)="$event.preventDefault(); decrementAbilityBonusPoint(statType[0])">-</a></td>
+              <td></td>
+              <td>+{{ classModifier()?.[statType[0]] }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            <input type="hidden"
+                   [value]="$any(formGroup.controls.allocatedAbilityBonusPoints.controls)[statType[0]]?.value"
+                   [formControl]="$any(formGroup.controls.allocatedAbilityBonusPoints.controls)[statType[0]]">
+          }
+        </tbody>
+      </table>
+
+      Unallocated Ability Bonus Points: {{ freeBonusPoints() }}
+    </mat-card-content>
+  </mat-card>
+</form>
+
+<pre>{{ formGroup.value | json }}</pre>

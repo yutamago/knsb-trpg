@@ -1,0 +1,54 @@
+@use 'styles/knsb_theme';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@mixin fontFaces {
+  @font-face {
+    font-family: "UDDigiKyokasho";
+    src: url("../public/fonts/UDDigiKyokasho/UDDigiKyokashoNK-R-03.ttf") format("truetype");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "UDDigiKyokasho";
+    src: url("../public/fonts/UDDigiKyokasho/UDDigiKyokashoNK-B-03.ttf") format("truetype");
+    font-weight: 500;
+  }
+  @font-face {
+    font-family: "GROBOLD";
+    src: url("../public/fonts/GROBOLD.ttf") format("truetype");
+    font-weight: 400;
+  }
+}
+
+@include fontFaces;
+@include knsb_theme.KonosubaTheme;
+
+body {
+  margin: 0;
+  font-family: "UDDigiKyokasho", sans-serif;
+}
+
+h1, .text-grobold {
+  font-family: "GROBOLD", sans-serif;
+}
+
+h1 {
+  text-transform: uppercase;
+  font-size: 3rem;
+  line-height: 1;
+
+  &::first-letter, > :first-child::first-letter {
+    font-size: 4rem;
+  }
+}
+
+.text-serif {
+  font-family: serif;
+}
+
+
+input[type="text"]:focus {
+  outline: none;
+}

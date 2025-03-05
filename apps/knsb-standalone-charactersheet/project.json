@@ -1,0 +1,95 @@
+{
+  "name": "knsb-standalone-charactersheet",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "knsb",
+  "sourceRoot": "apps/knsb-standalone-charactersheet/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/knsb-standalone-charactersheet",
+        "index": "apps/knsb-standalone-charactersheet/src/index.html",
+        "browser": "apps/knsb-standalone-charactersheet/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/knsb-standalone-charactersheet/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/knsb-standalone-charactersheet/public"
+          }
+        ],
+        "styles": ["apps/knsb-standalone-charactersheet/src/styles.scss"],
+        "scripts": [],
+        "server": "apps/knsb-standalone-charactersheet/src/main.server.ts",
+        "ssr": {
+
+          "entry": "apps/knsb-standalone-charactersheet/src/server.ts"
+        },
+        "prerender": true,
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "knsb-standalone-charactersheet:build:production"
+        },
+        "development": {
+          "buildTarget": "knsb-standalone-charactersheet:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "knsb-standalone-charactersheet:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../coverage/apps/knsb-standalone-charactersheet"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "knsb-standalone-charactersheet:build",
+        "port": 4200,
+        "staticFilePath": "dist/apps/knsb-standalone-charactersheet/browser",
+        "spa": true
+      }
+    }
+  }
+}

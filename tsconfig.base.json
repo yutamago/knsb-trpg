@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@konosuba-trpg/data-access": ["libs/shared/data-access/src/index.ts"],
+      "@konosuba-trpg/game-util": ["libs/shared/game-util/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
